@@ -25,3 +25,7 @@ class MailTemplateReport(models.Model):
         ondelete="cascade",
     )
     report_name = fields.Char(translate=True)
+    field_name_condition = fields.Char(
+        groups='base.group_system'
+    )
+
