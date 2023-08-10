@@ -23,10 +23,7 @@ class MailTemplate(models.Model):
         """
         self.ensure_one()
         multi_mode = True
-        results = super(MailTemplate, self).generate_email(
-            res_ids,
-            fields=fields
-        )
+        results = super(MailTemplate, self).generate_email(res_ids, fields=fields)
         if not self.template_report_ids:
             return results
         if isinstance(res_ids, int):
@@ -36,9 +33,7 @@ class MailTemplate(models.Model):
             attachments = values.setdefault("attachments", [])
             for template_report in self.template_report_ids:
                 if not self.check_condition(
-                    values['model'],
-                    res_id,
-                    template_report.sudo().field_name_condition
+                    values["model"], res_id, template_report.sudo().field_name_condition
                 ):
                     continue
                 report_name = self._render_template(
@@ -53,8 +48,7 @@ class MailTemplate(models.Model):
                     res = report.render([res_id])
                     if not res:
                         raise exceptions.UserError(
-                            _("Unsupported report type %s found."
-                              ) % report.report_type
+                            _("Unsupported report type %s found.") % report.report_type
                         )
                     result, report_format = res
                 result = base64.b64encode(result)
@@ -72,7 +66,7 @@ class MailTemplate(models.Model):
         if not field_name_condition:
             return True
         if field_name_condition not in record._fields:
-            raise UserError(_(
-                'Unknown field (%s) on model (%s)'
-            ) % (field_name_condition, model))
+            raise UserError(
+                _("Unknown field (%s) on model (%s)") % (field_name_condition, model)
+            )
         return record[field_name_condition]
